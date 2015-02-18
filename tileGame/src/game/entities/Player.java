@@ -4,15 +4,18 @@ import game.InputHandler;
 import game.Screen;
 import game.gfx.Colours;
 import game.level.Level;
+import game.level.tiles.tile;
 
 public class Player extends Mob {
 
 	private InputHandler input;
 	private int colour = Colours.get(-1, 111, 145, 543);
 	private int scale = 1;
+	
+	public int numOfShrooms=0;
 
 	public Player(Level level, int x, int y, InputHandler input) {
-		super(level, "Player", x, y, 1);
+		super(level, "Player", 10, 10, 1);
 		this.input = input;
 	}
 
@@ -34,6 +37,10 @@ public class Player extends Mob {
 			isMoving = true;
 		} else
 			isMoving = false;
+		//if(hasPickup(xa,ya)){
+		//	numOfShrooms+=1;
+		//	level.tiles[this.x/8 +this.y/8 * level.width] = tile.GRASS.getid();
+		//}
 
 	}
 
@@ -63,7 +70,35 @@ public class Player extends Mob {
 		screen.render(xOffset + (modifier * flipBottom), yOffset + modifier, xTile + (yTile + 1) * 32, colour, flipBottom, scale);
 		screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier, (1 + xTile) + (1 + yTile) * 32, colour, flipBottom, scale);
 	}
-
+	public boolean hasPickup(int xa, int ya) {
+		int xMin = 0;
+		int xMax = 7;
+		int yMin = 3;
+		int yMax = 7;
+		
+		
+		for (int x = xMin; x < xMax; x++) {
+			if (isPickupTile(xa, ya, x, yMin)) {
+				return true;
+			}
+		}
+		for (int x = xMin; x < xMax; x++) {
+			if (isPickupTile(xa, ya, x, yMax)) {
+				return true;
+			}
+		}
+		for (int y = yMin; y < yMax; y++) {
+			if (isPickupTile(xa, ya, xMin, y)) {
+				return true;
+			}
+		}
+		for (int y = yMin; y < yMax; y++) {
+			if (isPickupTile(xa, ya, xMax, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public boolean hasCollided(int xa, int ya) {
 		int xMin = 0;
 		int xMax = 7;

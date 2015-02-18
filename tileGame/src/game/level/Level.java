@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Level {
-	private byte[] tiles;
+	public byte[] tiles;
 	public int width;
 	public int height;
 	public List<Entity> entities = new ArrayList<Entity>();
@@ -28,11 +28,16 @@ public class Level {
 	public void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				Rresult=randomNum.nextInt(5);
-				if (Rresult == 1) {
-					tiles[x + y * width] = tile.RED_MUSHROOM.getid();
-				} else {
-					tiles[x + y * width] = tile.GRASS.getid();
+				// stone boarders
+				if (y == 0 || y == height || x == 0 || x == width) {
+					tiles[x + y * width] = tile.STONE.getid();
+				} else {//part of else so if i decide to make 1 say key random generate it won't be overtaken by the wall
+					Rresult = randomNum.nextInt(9);
+					if (Rresult == 1) {
+						tiles[x + y * width] = tile.RED_MUSHROOM.getid();
+					} else {
+						tiles[x + y * width] = tile.GRASS.getid();
+					}
 				}
 			}
 		}

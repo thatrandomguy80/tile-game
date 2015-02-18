@@ -14,24 +14,29 @@ public abstract class tile {
 	public static final tile STONE = new BasicSolidTile(1, 1, 0, Colours.get(-1, 333, -1, -1));
 	public static final tile GRASS = new BasicTile(2, 2, 0, Colours.get(-1, 131, 141, -1));
 	public static final tile BROWN_MUSHROOM = new BasicTile(3,3,0, Colours.get(555, 131, 141, 422));
-	public static final tile RED_MUSHROOM = new BasicTile(4,4,0, Colours.get(555, 131, 141, 460));
+	public static final tile RED_MUSHROOM = new BasicPickupTile(4,4,0, Colours.get(555, 131, 141, 460));
 
 	protected byte id;
 	protected boolean solid;
 	protected boolean pickup;
 	protected boolean emitter;
 
-	public tile(int id, boolean isSolid, boolean isEmitter) {
+	public tile(int id, boolean isSolid, boolean isPickup, boolean isEmitter) {
 		this.id = (byte) id;
 		if (tiles[id] != null)
 			throw new RuntimeException("dupe tile id on " + id);
 		this.solid = isSolid;
+		this.pickup = isPickup;
 		this.emitter = isEmitter;
 		tiles[id] = this;
 	}
 
 	public byte getid() {
 		return id;
+	}
+	
+	public boolean isPickup(){
+		return pickup;
 	}
 
 	public boolean isSolid() {

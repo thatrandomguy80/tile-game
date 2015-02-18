@@ -123,7 +123,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("frames:" + frames + "|| Ticks:" + ticks);
+				System.out.println("frames:" + frames + "|| Ticks:" + ticks+"|| Shrooms:" +player.numOfShrooms);
 				frames = 0;
 				ticks = 0;
 			}
