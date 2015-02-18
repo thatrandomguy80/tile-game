@@ -1,3 +1,4 @@
+//Comment edit to test Git changes 
 package game;
 
 import game.entities.Player;
@@ -23,6 +24,11 @@ public class Game extends Canvas implements Runnable {
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "Game";
+	//random var just checing git updates
+	//notice me
+	//senpai
+	//plz
+	public int git_changer = 4;
 
 	private JFrame frame;
 	public boolean running = false;
