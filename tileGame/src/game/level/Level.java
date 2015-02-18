@@ -7,12 +7,15 @@ import game.level.tiles.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Level {
 	private byte[] tiles;
 	public int width;
 	public int height;
 	public List<Entity> entities = new ArrayList<Entity>();
+	Random randomNum = new Random();
+	private int Rresult = 0;
 
 	public Level(int width, int height) {
 		tiles = new byte[width * height];
@@ -25,10 +28,11 @@ public class Level {
 	public void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (x * y % 10 < 7) {
-					tiles[x + y * width] = tile.GRASS.getid();
+				Rresult=randomNum.nextInt(5);
+				if (Rresult == 1) {
+					tiles[x + y * width] = tile.RED_MUSHROOM.getid();
 				} else {
-					tiles[x + y * width] = tile.STONE.getid();
+					tiles[x + y * width] = tile.GRASS.getid();
 				}
 			}
 		}

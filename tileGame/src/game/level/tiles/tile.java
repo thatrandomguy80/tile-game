@@ -5,14 +5,20 @@ import game.gfx.Colours;
 import game.level.Level;
 
 public abstract class tile {
+	//colours picker
+	//path brown 542
+	//red 460
 
 	public static final tile[] tiles = new tile[256];
 	public static final tile VOID = new BasicSolidTile(0, 0, 0, Colours.get(000, -1, -1, -1));
 	public static final tile STONE = new BasicSolidTile(1, 1, 0, Colours.get(-1, 333, -1, -1));
 	public static final tile GRASS = new BasicTile(2, 2, 0, Colours.get(-1, 131, 141, -1));
+	public static final tile BROWN_MUSHROOM = new BasicTile(3,3,0, Colours.get(555, 131, 141, 422));
+	public static final tile RED_MUSHROOM = new BasicTile(4,4,0, Colours.get(555, 131, 141, 460));
 
 	protected byte id;
 	protected boolean solid;
+	protected boolean pickup;
 	protected boolean emitter;
 
 	public tile(int id, boolean isSolid, boolean isEmitter) {
