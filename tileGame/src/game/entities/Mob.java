@@ -61,6 +61,7 @@ public abstract class Mob extends Entity {
 		tile lastTile = level.getTile((this.x + x) >> 3, (this.y + y) >> 3);
 		tile newTile = level.getTile((this.x + x + xa) >> 3, (this.y + y + ya) >> 3);
 		if(!lastTile.equals(newTile)&& newTile.isPickup()){
+			level.tiles[((this.x + x + xa) >> 3)+ (((this.y + y + ya) >> 3)*level.width)] = tile.GRASS.getid();
 			return true;
 		}
 		return false;

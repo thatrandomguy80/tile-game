@@ -5,6 +5,10 @@ import game.entities.Entity;
 //import game.entities.Player;
 import game.level.tiles.tile;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,7 +25,52 @@ public class Level {
 		tiles = new byte[width * height];
 		this.width = width;
 		this.height = height;
-		this.generateLevel();
+		this.loadLevel("/level1.csv");
+		// this.generateLevel();
+
+	}
+
+	public void loadLevel(String filename) {
+		BufferedReader br = null;
+		String line = "";
+
+		try {
+
+			br = new BufferedReader(new FileReader(filename));
+			int y = 0;
+			while ((line = br.readLine()) != null) {
+
+				// use comma as separator
+				String[] temp = line.split(",");
+				for (int x = 0; x < width; x++) {
+					int xtemp = Integer.parseInt(temp[x]);
+					switch (xtemp) {
+					case 0:
+						this.tiles[x + y] = tile.VOID.getid();
+						break;
+					case 1:
+						this.tiles[x + y] = tile.GRASS.getid();
+						break;
+					case 2:
+						this.tiles[x + y] = tile.STONE.getid();
+						break;
+					case 3:
+						this.tiles[x + y] = tile.RED_MUSHROOM.getid();
+						break;
+					case 4:
+						this.tiles[x + y] = tile.BROWN_MUSHROOM.getid();
+						break;
+
+					}
+				}
+				y++;
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -31,7 +80,7 @@ public class Level {
 				// stone boarders
 				if (y == 0 || y == height || x == 0 || x == width) {
 					tiles[x + y * width] = tile.STONE.getid();
-				} else {//part of else so if i decide to make 1 say key random generate it won't be overtaken by the wall
+				} else {// part of else so if i decide to make 1 say key random generate it won't be overtaken by the wall
 					Rresult = randomNum.nextInt(9);
 					if (Rresult == 1) {
 						tiles[x + y * width] = tile.RED_MUSHROOM.getid();
@@ -78,6 +127,11 @@ public class Level {
 		if (0 > x || x >= width || 0 > y || y >= height)
 			return tile.VOID;
 		return tile.tiles[tiles[x + y * width]];
+	}
+
+	public void setTile(int x, int y) {
+		if (!(0 > x || x >= width || 0 > y || y >= height))
+			this.tiles[tiles[x + y * width]] = tile.STONE.getid();
 	}
 
 	public void addEntity(Entity entity) {
