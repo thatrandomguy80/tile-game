@@ -4,7 +4,6 @@ import game.InputHandler;
 import game.Screen;
 import game.gfx.Colours;
 import game.level.Level;
-import game.level.tiles.tile;
 
 public class Player extends Mob {
 
@@ -43,17 +42,15 @@ public class Player extends Mob {
 			isMoving = true;
 		} else
 			isMoving = false;
-		if(hasPickup(xa,ya)){
-			numOfShrooms+=1;
-			//level.tiles[(this.x/8) + (this.y/8 * level.width)] = tile.STONE.getid();
+		if (hasPickup(xa, ya)) {
+			numOfShrooms += 1;
+			// level.tiles[(this.x/8) + (this.y/8 * level.width)] = tile.STONE.getid();
 		}
-
 	}
 
 	public void render(Screen screen) {
 		int xTile = 0;
 		int yTile = 28;
-
 		// animation speed (lower is faster)
 		int walkingSpeed = 3;
 		int flipTop = (numSteps >> walkingSpeed) & 1;

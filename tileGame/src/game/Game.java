@@ -1,6 +1,9 @@
 package game;
 
 import game.entities.Player;
+import game.entities.DevBrush;
+import game.gfx.Colours;
+import game.gfx.Font;
 import game.gfx.SpriteSheet;
 import game.level.Level;
 
@@ -24,22 +27,22 @@ public class Game extends Canvas implements Runnable {
 	public static final int SCALE = 3;
 	public static final String NAME = "Game";
 
-
 	private JFrame frame;
 	public boolean running = false;
 	public int tickCount = 0;
 
-	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT,
-			BufferedImage.TYPE_INT_RGB);
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer())
-			.getData();
+	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private int[] colours = new int[6 * 6 * 6];
 
 	private Screen screen;
 	public InputHandler input;
 	public Level level;
 	public Player player;
+	public DevBrush dev;
+	
+	public static boolean devMode = false;
 
 	public Game() {
 		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -72,8 +75,9 @@ public class Game extends Canvas implements Runnable {
 		}
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/SpriteSheet.png"));
 		input = new InputHandler(this);
-		level = new Level(64, 64);
+		level = new Level(64, 64, "res/level1.csv");
 		player = new Player(level, 0, 0, input);
+		dev = new DevBrush(level,0,0,input);
 		level.addEntity(player);
 	}
 
@@ -123,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("frames:" + frames + "|| Ticks:" + ticks+"|| Shrooms:" +player.numOfShrooms);
+				System.out.println("frames:" + frames + "|| Ticks:" + ticks + "|| Shrooms:" + player.numOfShrooms);
 				frames = 0;
 				ticks = 0;
 			}
@@ -133,6 +137,11 @@ public class Game extends Canvas implements Runnable {
 	public void tick() {
 		tickCount++;
 		level.tick();
+		int devcount=0;
+		if(devMode && devcount==0){
+			level.addEntity(dev);
+			devcount ++;
+		}
 	}
 
 	public void render() {
@@ -147,7 +156,9 @@ public class Game extends Canvas implements Runnable {
 		// tiles
 		level.renderTiles(screen, xOffset, yOffset);
 		// font renders here
-
+		String devtext = "DEVMODE ACTIVE";
+		if(devMode)//prints above player head won't work if scaled
+			Font.render(devtext, screen, dev.x-((devtext.length()*8)/2-8),dev.y-17, Colours.get(000, -1, -1, -1), 1);
 		// sprites
 		level.renderEntites(screen);
 

@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,11 +23,11 @@ public class Level {
 	Random randomNum = new Random();
 	private int Rresult = 0;
 
-	public Level(int width, int height) {
+	public Level(int width, int height, String levelpath) {
 		tiles = new byte[width * height];
 		this.width = width;
 		this.height = height;
-		this.loadLevel("/level1.csv");
+		this.loadLevel(levelpath);
 		// this.generateLevel();
 
 	}
@@ -43,34 +45,60 @@ public class Level {
 				// use comma as separator
 				String[] temp = line.split(",");
 				for (int x = 0; x < width; x++) {
-					int xtemp = Integer.parseInt(temp[x]);
-					switch (xtemp) {
-					case 0:
-						this.tiles[x + y] = tile.VOID.getid();
+					switch (temp[x]) {
+					case "0":
+						this.tiles[x + (y * this.width)] = tile.VOID.getid();
 						break;
-					case 1:
-						this.tiles[x + y] = tile.GRASS.getid();
+					case "1":
+						this.tiles[x + (y * this.width)] = tile.STONE.getid();
 						break;
-					case 2:
-						this.tiles[x + y] = tile.STONE.getid();
+					case "2":
+						this.tiles[x + (y * this.width)] = tile.GRASS.getid();
 						break;
-					case 3:
-						this.tiles[x + y] = tile.RED_MUSHROOM.getid();
+					case "3":
+						this.tiles[x + (y * this.width)] = tile.BROWN_MUSHROOM.getid();
 						break;
-					case 4:
-						this.tiles[x + y] = tile.BROWN_MUSHROOM.getid();
+					case "4":
+						this.tiles[x + (y * this.width)] = tile.RED_MUSHROOM.getid();
 						break;
 
 					}
 				}
 				y++;
 			}
-
+			System.out.print("loaded\n");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	// may not need
+	public void saveLevel() {
+
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("res/level1.csv", "UTF-8");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				int temp = tiles[x + (y * width)];
+				System.out.print(temp);
+				writer.print(temp);
+				if (x != width - 1)
+					writer.print(",");
+			}
+			writer.println();
+		}
+		writer.close();
+		System.out.print("saved\n");
 
 	}
 
@@ -117,6 +145,10 @@ public class Level {
 		}
 	}
 
+	public void paintMap() {
+
+	}
+
 	public void renderEntites(Screen screen) {
 		for (Entity e : entities) {
 			e.render(screen);
@@ -127,11 +159,6 @@ public class Level {
 		if (0 > x || x >= width || 0 > y || y >= height)
 			return tile.VOID;
 		return tile.tiles[tiles[x + y * width]];
-	}
-
-	public void setTile(int x, int y) {
-		if (!(0 > x || x >= width || 0 > y || y >= height))
-			this.tiles[tiles[x + y * width]] = tile.STONE.getid();
 	}
 
 	public void addEntity(Entity entity) {
