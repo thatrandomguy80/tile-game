@@ -3,6 +3,7 @@ package game.entities;
 import game.InputHandler;
 import game.Screen;
 import game.gfx.Colours;
+import game.gfx.Font;
 import game.level.Level;
 
 public class Player extends Mob {
@@ -11,11 +12,10 @@ public class Player extends Mob {
 	private int colour = Colours.get(-1, 111, 145, 543);
 	private int scale = 1;
 	// collision box
-
-	private int xMin = 0;
-	private int xMax = 7;
-	private int yMin = 3;
-	private int yMax = 7;
+	public int xMin = 0 ;
+	public int xMax = 7 * scale;
+	public int yMin = 3 ;
+	public int yMax = 7 * scale;
 
 	public int numOfShrooms = 0;
 
@@ -25,9 +25,14 @@ public class Player extends Mob {
 	}
 
 	public void tick() {
+		movement();	
+	}
+	
+
+
+	public void movement() {
 		int xa = 0;
 		int ya = 0;
-
 		if (input.up.isPressed())
 			ya--;
 		if (input.down.isPressed())
@@ -44,7 +49,6 @@ public class Player extends Mob {
 			isMoving = false;
 		if (hasPickup(xa, ya)) {
 			numOfShrooms += 1;
-			// level.tiles[(this.x/8) + (this.y/8 * level.width)] = tile.STONE.getid();
 		}
 	}
 
@@ -99,11 +103,6 @@ public class Player extends Mob {
 	}
 
 	public boolean hasCollided(int xa, int ya) {
-		int xMin = 0;
-		int xMax = 7;
-		int yMin = 3;
-		int yMax = 7;
-
 		for (int x = xMin; x < xMax; x++) {
 			if (isSolidTile(xa, ya, x, yMin)) {
 				return true;

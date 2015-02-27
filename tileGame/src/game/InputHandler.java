@@ -42,6 +42,10 @@ public class InputHandler implements KeyListener {
 	public Key devdown = new Key();
 	public Key devleft = new Key();
 	public Key devright = new Key();
+	
+	//other keys
+	public Key e = new Key();
+	
 	// for devmode
 	public Key f1 = new Key();
 	public Key f2 = new Key();
@@ -109,6 +113,9 @@ public class InputHandler implements KeyListener {
 			f4.toggle(isPressed);
 		if (KeyCode == KeyEvent.VK_F5)
 			f5.toggle(isPressed);
+		
+		if (KeyCode == KeyEvent.VK_E)
+			e.toggle(isPressed);
 	}
 
 }

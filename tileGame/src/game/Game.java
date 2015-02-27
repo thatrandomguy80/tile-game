@@ -1,10 +1,14 @@
 package game;
 
-import game.entities.Player;
+//text box need much work
+
 import game.entities.DevBrush;
+import game.entities.Jones;
+import game.entities.Player;
 import game.gfx.Colours;
 import game.gfx.Font;
 import game.gfx.SpriteSheet;
+import game.gfx.Textbox;
 import game.level.Level;
 
 import java.awt.BorderLayout;
@@ -39,10 +43,16 @@ public class Game extends Canvas implements Runnable {
 	private Screen screen;
 	public InputHandler input;
 	public Level level;
-	public Player player;
+	public static Player player;
+	public Jones jones;
 	public DevBrush dev;
+	public Textbox textbox;
 	
+	public int playerX=0;
+	public int playerY=0;
 	public static boolean devMode = false;
+	
+	int tempCount=0;
 
 	public Game() {
 		setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -77,8 +87,16 @@ public class Game extends Canvas implements Runnable {
 		input = new InputHandler(this);
 		level = new Level(64, 64, "res/level1.csv");
 		player = new Player(level, 0, 0, input);
+		jones = new Jones(level,"jones",0,0,0);
+		jones = new Jones(level,"bob",0,0,0);
+		jones = new Jones(level,"jane",0,0,0);
+		jones = new Jones(level,"joe",0,0,0);
 		dev = new DevBrush(level,0,0,input);
+		
+		level.addEntity(jones);
 		level.addEntity(player);
+		
+		
 	}
 
 	public synchronized void start() {
@@ -137,10 +155,8 @@ public class Game extends Canvas implements Runnable {
 	public void tick() {
 		tickCount++;
 		level.tick();
-		int devcount=0;
-		if(devMode && devcount==0){
+		if(devMode){
 			level.addEntity(dev);
-			devcount ++;
 		}
 	}
 
@@ -152,13 +168,19 @@ public class Game extends Canvas implements Runnable {
 		}
 		int xOffset = player.x - (screen.width / 2);
 		int yOffset = player.y - (screen.height / 2);
-
+		
 		// tiles
 		level.renderTiles(screen, xOffset, yOffset);
 		// font renders here
+		String text="Hey! Something";
+		textbox = new Textbox(jones.x-(text.length()/2),jones.y-16, screen, 60, 8);
+		
+		textbox.render(text);
+
 		String devtext = "DEVMODE ACTIVE";
-		if(devMode)//prints above player head won't work if scaled
+		if(devMode){//prints above devBrush
 			Font.render(devtext, screen, dev.x-((devtext.length()*8)/2-8),dev.y-17, Colours.get(000, -1, -1, -1), 1);
+		}
 		// sprites
 		level.renderEntites(screen);
 

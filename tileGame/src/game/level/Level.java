@@ -35,13 +35,10 @@ public class Level {
 	public void loadLevel(String filename) {
 		BufferedReader br = null;
 		String line = "";
-
 		try {
-
 			br = new BufferedReader(new FileReader(filename));
 			int y = 0;
 			while ((line = br.readLine()) != null) {
-
 				// use comma as separator
 				String[] temp = line.split(",");
 				for (int x = 0; x < width; x++) {
@@ -61,7 +58,6 @@ public class Level {
 					case "4":
 						this.tiles[x + (y * this.width)] = tile.RED_MUSHROOM.getid();
 						break;
-
 					}
 				}
 				y++;
@@ -74,10 +70,7 @@ public class Level {
 		}
 
 	}
-
-	// may not need
 	public void saveLevel() {
-
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("res/level1.csv", "UTF-8");
@@ -99,7 +92,6 @@ public class Level {
 		}
 		writer.close();
 		System.out.print("saved\n");
-
 	}
 
 	public void generateLevel() {
@@ -145,9 +137,6 @@ public class Level {
 		}
 	}
 
-	public void paintMap() {
-
-	}
 
 	public void renderEntites(Screen screen) {
 		for (Entity e : entities) {
