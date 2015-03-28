@@ -8,7 +8,7 @@ import game.entities.Player;
 import game.gfx.Colours;
 import game.gfx.Font;
 import game.gfx.SpriteSheet;
-import game.gfx.Textbox;
+
 import game.level.Level;
 
 import java.awt.BorderLayout;
@@ -16,6 +16,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -26,7 +28,7 @@ public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final int WIDTH = 160;
+	public static final int WIDTH =320;
 	public static final int HEIGHT = WIDTH / 12 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "Game";
@@ -46,7 +48,6 @@ public class Game extends Canvas implements Runnable {
 	public static Player player;
 	public Jones jones;
 	public DevBrush dev;
-	public Textbox textbox;
 	
 	public int playerX=0;
 	public int playerY=0;
@@ -88,9 +89,6 @@ public class Game extends Canvas implements Runnable {
 		level = new Level(64, 64, "res/level1.csv");
 		player = new Player(level, 0, 0, input);
 		jones = new Jones(level,"jones",0,0,0);
-		jones = new Jones(level,"bob",0,0,0);
-		jones = new Jones(level,"jane",0,0,0);
-		jones = new Jones(level,"joe",0,0,0);
 		dev = new DevBrush(level,0,0,input);
 		
 		level.addEntity(jones);
@@ -172,10 +170,6 @@ public class Game extends Canvas implements Runnable {
 		// tiles
 		level.renderTiles(screen, xOffset, yOffset);
 		// font renders here
-		String text="Hey! Something";
-		textbox = new Textbox(jones.x-(text.length()/2),jones.y-16, screen, 60, 8);
-		
-		textbox.render(text);
 
 		String devtext = "DEVMODE ACTIVE";
 		if(devMode){//prints above devBrush
@@ -193,12 +187,15 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();
+		g2d.drawString("test text",20, 20);
 	}
 
 	public static void main(String[] args) {

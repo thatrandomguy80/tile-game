@@ -15,6 +15,7 @@ public abstract class tile {
 	public static final tile GRASS = new BasicTile(2, 2, 0, Colours.get(-1, 131, 141, -1));
 	public static final tile BROWN_MUSHROOM = new BasicTile(3,3,0, Colours.get(555, 131, 141, 422));
 	public static final tile RED_MUSHROOM = new BasicPickupTile(4,4,0, Colours.get(555, 131, 141, 460));
+	public static final tile CHEST = new BasicSolidTile(5,6,0, Colours.get(000, 131, -1, 542));
 
 	protected byte id;
 	protected boolean solid;

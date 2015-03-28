@@ -2,6 +2,9 @@ package game.level;
 
 import game.Screen;
 import game.entities.Entity;
+import game.gfx.Colours;
+import game.gfx.Font;
+
 //import game.entities.Player;
 import game.level.tiles.tile;
 
@@ -22,7 +25,6 @@ public class Level {
 	public List<Entity> entities = new ArrayList<Entity>();
 	Random randomNum = new Random();
 	private int Rresult = 0;
-
 	public Level(int width, int height, String levelpath) {
 		tiles = new byte[width * height];
 		this.width = width;
@@ -58,6 +60,9 @@ public class Level {
 					case "4":
 						this.tiles[x + (y * this.width)] = tile.RED_MUSHROOM.getid();
 						break;
+					case "5":
+						this.tiles[x + (y * this.width)] = tile.CHEST.getid();
+						break;
 					}
 				}
 				y++;
@@ -70,6 +75,7 @@ public class Level {
 		}
 
 	}
+
 	public void saveLevel() {
 		PrintWriter writer = null;
 		try {
@@ -135,13 +141,32 @@ public class Level {
 				getTile(x, y).render(screen, this, x << 3, y << 3);
 			}
 		}
+		textBoxPrinting(screen, xOffset, yOffset);
 	}
-
 
 	public void renderEntites(Screen screen) {
 		for (Entity e : entities) {
 			e.render(screen);
 		}
+	}
+
+	public void textBoxPrinting(Screen screen, int xOffset, int yOffset) {
+		int colour = Colours.get(555, -1, -1, 000);
+		String text = "";
+		int charPerScreen = 40;
+		int lines = text.length() / charPerScreen;
+		for (int i=0;i<=lines;i++){
+			if (i == lines)
+				Font.render(text.substring((40*i), text.length()), screen, xOffset, yOffset+(i*8), colour, 1);
+			else
+				Font.render(text.substring((40*i), ((40*i))+40), screen, xOffset, yOffset+(i*8), colour, 1);
+		}
+//		for (int i =0; text.length()<=charPerScreen*i; i++){
+//			Font.render(text.substring(charPerScreen+i, (charPerScreen*(i+1))+i), screen, xOffset, yOffset, colour, 1);
+//
+//		}
+//		Font.render(text, screen, xOffset, yOffset, colour, 1);
+//		Font.render(text, screen, xOffset, yOffset+8, colour, 1);
 	}
 
 	public tile getTile(int x, int y) {
