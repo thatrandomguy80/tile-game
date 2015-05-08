@@ -3,8 +3,11 @@ package game.entities;
 import game.InputHandler;
 import game.Screen;
 import game.gfx.Colours;
-import game.gfx.Font;
+import game.items.Item;
 import game.level.Level;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends Mob {
 
@@ -12,11 +15,12 @@ public class Player extends Mob {
 	private int colour = Colours.get(-1, 111, 145, 543);
 	private int scale = 1;
 	// collision box
-	public int xMin = 0 ;
+	public int xMin = 0;
 	public int xMax = 7 * scale;
-	public int yMin = 3 ;
+	public int yMin = 3;
 	public int yMax = 7 * scale;
 
+	public Map<Item, String> inven = new HashMap<Item, String>();
 	public int numOfShrooms = 0;
 
 	public Player(Level level, int x, int y, InputHandler input) {
@@ -25,10 +29,8 @@ public class Player extends Mob {
 	}
 
 	public void tick() {
-		movement();	
+		movement();
 	}
-	
-
 
 	public void movement() {
 		int xa = 0;

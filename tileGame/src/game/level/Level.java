@@ -20,13 +20,16 @@ import java.util.Random;
 
 public class Level {
 	public byte[] tiles;
+	public byte[] tiles1;// implemet 2nd layer for items in tile slots
 	public int width;
 	public int height;
 	public List<Entity> entities = new ArrayList<Entity>();
 	Random randomNum = new Random();
 	private int Rresult = 0;
+
 	public Level(int width, int height, String levelpath) {
 		tiles = new byte[width * height];
+		tiles1 = new byte[width * height];
 		this.width = width;
 		this.height = height;
 		this.loadLevel(levelpath);
@@ -118,6 +121,8 @@ public class Level {
 		}
 	}
 
+
+
 	public void tick() {
 		for (Entity e : entities) {
 			e.tick();
@@ -136,9 +141,9 @@ public class Level {
 
 		screen.setOffset(xOffset, yOffset);
 
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				getTile(x, y).render(screen, this, x << 3, y << 3);
+		for (int y = (yOffset>>3); y < (yOffset + screen.height>>3)+1; y++) {
+			for (int x = (xOffset>>3); x < (xOffset + screen.width>>3)+1; x++) {
+				getTile(x, y, 0).render(screen, this, x << 3, y << 3);
 			}
 		}
 		textBoxPrinting(screen, xOffset, yOffset);
@@ -155,24 +160,31 @@ public class Level {
 		String text = "";
 		int charPerScreen = 40;
 		int lines = text.length() / charPerScreen;
-		for (int i=0;i<=lines;i++){
+		for (int i = 0; i <= lines; i++) {
 			if (i == lines)
-				Font.render(text.substring((40*i), text.length()), screen, xOffset, yOffset+(i*8), colour, 1);
+				Font.render(text.substring((40 * i), text.length()), screen, xOffset, yOffset + (i * 8), colour, 1);
 			else
-				Font.render(text.substring((40*i), ((40*i))+40), screen, xOffset, yOffset+(i*8), colour, 1);
+				Font.render(text.substring((40 * i), ((40 * i)) + 40), screen, xOffset, yOffset + (i * 8), colour, 1);
 		}
-//		for (int i =0; text.length()<=charPerScreen*i; i++){
-//			Font.render(text.substring(charPerScreen+i, (charPerScreen*(i+1))+i), screen, xOffset, yOffset, colour, 1);
-//
-//		}
-//		Font.render(text, screen, xOffset, yOffset, colour, 1);
-//		Font.render(text, screen, xOffset, yOffset+8, colour, 1);
+		// for (int i =0; text.length()<=charPerScreen*i; i++){
+		// Font.render(text.substring(charPerScreen+i, (charPerScreen*(i+1))+i), screen, xOffset, yOffset, colour, 1);
+		//
+		// }
+		// Font.render(text, screen, xOffset, yOffset, colour, 1);
+		// Font.render(text, screen, xOffset, yOffset+8, colour, 1);
 	}
 
-	public tile getTile(int x, int y) {
+	public tile getTile(int x, int y, int layer) {
 		if (0 > x || x >= width || 0 > y || y >= height)
 			return tile.VOID;
-		return tile.tiles[tiles[x + y * width]];
+		switch (layer) {
+		case 0:
+			return tile.tiles[tiles[x + y * width]];
+		case 1:
+			return tile.tiles[tiles1[x + y * width]];
+		default:
+			return tile.tiles[tiles[x + y * width]];
+		}
 	}
 
 	public void addEntity(Entity entity) {
