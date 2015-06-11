@@ -52,6 +52,9 @@ public class InputHandler implements KeyListener {
 	public Key f3 = new Key();
 	public Key f4 = new Key();
 	public Key f5 = new Key();
+	public Key f6 = new Key();
+	public Key f7 = new Key();
+	public Key f8 = new Key();
 	public Key f10 = new Key();
 	public Key f9 = new Key();
 	public Key space = new Key();
@@ -113,6 +116,12 @@ public class InputHandler implements KeyListener {
 			f4.toggle(isPressed);
 		if (KeyCode == KeyEvent.VK_F5)
 			f5.toggle(isPressed);
+		if (KeyCode == KeyEvent.VK_F6)
+			f6.toggle(isPressed);
+		if (KeyCode == KeyEvent.VK_F7)
+			f7.toggle(isPressed);
+		if (KeyCode == KeyEvent.VK_F8)
+			f8.toggle(isPressed);
 		
 		if (KeyCode == KeyEvent.VK_E)
 			e.toggle(isPressed);

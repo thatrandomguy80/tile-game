@@ -61,6 +61,12 @@ public class DevBrush extends Mob {
 			this.xTile = 3;
 		if (input.f5.isPressed())
 			this.xTile = 4;
+		if (input.f6.isPressed())
+			this.xTile = 5;
+		if (input.f7.isPressed())
+			this.xTile = 6;
+		if (input.f8.isPressed())
+			this.xTile = 7;
 
 		if (input.space.isPressed()) {
 			switch (xTile) {
@@ -78,6 +84,15 @@ public class DevBrush extends Mob {
 				break;
 			case 4:
 				level.tiles[(this.x / 8) + (this.y / 8) * level.width] = tile.BROWN_MUSHROOM.getid();
+				break;
+			case 5:
+				level.tiles[(this.x / 8) + (this.y / 8) * level.width] = tile.RD_UP.getid();
+				break;
+			case 6:
+				level.tiles[(this.x / 8) + (this.y / 8) * level.width] = tile.RD_LEFT.getid();
+				break;
+			case 7:
+				level.tiles[(this.x / 8) + (this.y / 8) * level.width] = tile.RD_LEFT_DOWN.getid();
 				break;
 			}
 			//input.space.toggle(false);

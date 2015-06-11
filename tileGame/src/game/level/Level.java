@@ -66,6 +66,15 @@ public class Level {
 					case "5":
 						this.tiles[x + (y * this.width)] = tile.CHEST.getid();
 						break;
+					case "10":
+						this.tiles[x + (y * this.width)] = tile.RD_UP.getid();
+						break;
+					case "11":
+						this.tiles[x + (y * this.width)] = tile.RD_LEFT_DOWN.getid();
+						break;
+					case "12":
+						this.tiles[x + (y * this.width)] = tile.RD_LEFT.getid();
+						break;
 					}
 				}
 				y++;
@@ -121,8 +130,6 @@ public class Level {
 		}
 	}
 
-
-
 	public void tick() {
 		for (Entity e : entities) {
 			e.tick();
@@ -141,12 +148,12 @@ public class Level {
 
 		screen.setOffset(xOffset, yOffset);
 
-		for (int y = (yOffset>>3); y < (yOffset + screen.height>>3)+1; y++) {
-			for (int x = (xOffset>>3); x < (xOffset + screen.width>>3)+1; x++) {
+		for (int y = (yOffset >> 3); y < (yOffset + screen.height >> 3) + 1; y++) {
+			for (int x = (xOffset >> 3); x < (xOffset + screen.width >> 3) + 1; x++) {
 				getTile(x, y, 0).render(screen, this, x << 3, y << 3);
 			}
 		}
-		textBoxPrinting(screen, xOffset, yOffset);
+
 	}
 
 	public void renderEntites(Screen screen) {
@@ -155,17 +162,32 @@ public class Level {
 		}
 	}
 
-	public void textBoxPrinting(Screen screen, int xOffset, int yOffset) {
+	public void textBoxPrinting(String text, Screen screen, int xOffset, int yOffset) {
 		int colour = Colours.get(555, -1, -1, 000);
-		String text = "";
+		int colour2 = Colours.get(-1, -1, -1, 320);
 		int charPerScreen = 40;
 		int lines = text.length() / charPerScreen;
 		for (int i = 0; i <= lines; i++) {
-			if (i == lines)
+			if (i == lines) {
 				Font.render(text.substring((40 * i), text.length()), screen, xOffset, yOffset + (i * 8), colour, 1);
-			else
+				//boarder
+				
+				
+
+				
+
+			} else
 				Font.render(text.substring((40 * i), ((40 * i)) + 40), screen, xOffset, yOffset + (i * 8), colour, 1);
+
 		}
+		
+		screen.render(xOffset, yOffset, tile.LEFT.getid(), colour2, 0x00, 1);
+		for (int j=1;j<text.length()-1;j++){
+			screen.render(xOffset+(j*8), yOffset, tile.CENTER.getid(), colour2, 0x00, 1);
+		}
+		screen.render(xOffset+((text.length()*8) -8), yOffset, tile.RIGHT.getid(), Colours.get(-1, -1, -1, 420), 0x00, 1);
+		
+		
 		// for (int i =0; text.length()<=charPerScreen*i; i++){
 		// Font.render(text.substring(charPerScreen+i, (charPerScreen*(i+1))+i), screen, xOffset, yOffset, colour, 1);
 		//

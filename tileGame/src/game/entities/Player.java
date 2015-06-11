@@ -33,6 +33,13 @@ public class Player extends Mob {
 
 	public void tick() {
 		movement();
+		if(numOfShrooms >=3){
+			scale++;
+			numOfShrooms=0;
+			yMax = 7 * scale;
+			xMax = 7 * scale;
+		}	
+		
 	}
 
 	public void movement() {
@@ -81,6 +88,8 @@ public class Player extends Mob {
 
 		screen.render(xOffset + (modifier * flipBottom), yOffset + modifier, xTile + (yTile + 1) * 32, colour, flipBottom, scale);
 		screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier, (1 + xTile) + (1 + yTile) * 32, colour, flipBottom, scale);
+		
+//		Font.render(username, screen, xTile, yTile, xOffset, yOffset);
 	}
 
 	public boolean hasPickup(int xa, int ya) {
@@ -129,6 +138,10 @@ public class Player extends Mob {
 			}
 		}
 		return false;
+	}
+	
+	public int getScale(){
+		return scale;
 	}
 
 }

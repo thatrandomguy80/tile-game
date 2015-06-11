@@ -1,6 +1,7 @@
 package game;
 
-//text box need much work
+//TODO: Allow scaled tiles, Inventory system, Items, rendering items, Maybe scale down text for new text box?, Finish multiplayer, implement floating username when in multiplayer mode.
+//TODO: AI? TOWNs? QUESTS? new sections/levels
 
 import game.entities.DevBrush;
 import game.entities.Jones;
@@ -44,12 +45,13 @@ public class Game extends Canvas implements Runnable {
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 	private int[] colours = new int[6 * 6 * 6];
 
-	private Screen screen;
+	public Screen screen; // may need to be private
 	public InputHandler input;
 	public Level level;
 	public static Player player;
 	public Jones jones;
 	public DevBrush dev;
+	
 	
 	//multi stuff
 	private GameClient socketClient;
@@ -93,7 +95,7 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/SpriteSheet.png"));
 		input = new InputHandler(this);
 		level = new Level(64, 64, "res/level1.csv");
-		player = new Player(level, 0, 0, input,new String("random"));
+		player = new Player(level, 0, 0, input,JOptionPane.showInputDialog("What would you like to be called?"));
 		jones = new Jones(level,"jones",0,0,0);
 		dev = new DevBrush(level,0,0,input);
 		
@@ -185,13 +187,15 @@ public class Game extends Canvas implements Runnable {
 		// tiles
 		level.renderTiles(screen, xOffset, yOffset);
 		// font renders here
-
+		if (player.getScale() >=3)
+		level.textBoxPrinting(new String("AHH IT'S GODZILLA"),screen,screen.xOffset,screen.yOffset);//needs to be after render tiles and using screen versions
 		String devtext = "DEVMODE ACTIVE";
 		if(devMode){//prints above devBrush
 			Font.render(devtext, screen, dev.x-((devtext.length()*8)/2-8),dev.y-17, Colours.get(000, -1, -1, -1), 1);
 		}
 		// sprites
 		level.renderEntites(screen);
+		
 
 		for (int y = 0; y < screen.height; y++) {
 			for (int x = 0; x < screen.width; x++) {
