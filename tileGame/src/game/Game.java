@@ -8,8 +8,9 @@ import game.entities.Player;
 import game.gfx.Colours;
 import game.gfx.Font;
 import game.gfx.SpriteSheet;
-
 import game.level.Level;
+import game.net.GameClient;
+import game.net.GameServer;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -23,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class Game extends Canvas implements Runnable {
 
@@ -48,6 +50,10 @@ public class Game extends Canvas implements Runnable {
 	public static Player player;
 	public Jones jones;
 	public DevBrush dev;
+	
+	//multi stuff
+	private GameClient socketClient;
+	private GameServer socketServer;
 	
 	public int playerX=0;
 	public int playerY=0;
@@ -87,12 +93,14 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(WIDTH, HEIGHT, new SpriteSheet("/SpriteSheet.png"));
 		input = new InputHandler(this);
 		level = new Level(64, 64, "res/level1.csv");
-		player = new Player(level, 0, 0, input);
+		player = new Player(level, 0, 0, input,new String("random"));
 		jones = new Jones(level,"jones",0,0,0);
 		dev = new DevBrush(level,0,0,input);
 		
 		level.addEntity(jones);
 		level.addEntity(player);
+		
+		socketClient.sendData("ping".getBytes());
 		
 		
 	}
@@ -100,6 +108,13 @@ public class Game extends Canvas implements Runnable {
 	public synchronized void start() {
 		running = true;
 		new Thread(this).start();
+		if(JOptionPane.showConfirmDialog(this, "Do you want to run the server?")==0){
+			socketServer = new GameServer(this);
+			socketServer.start();
+		}
+		
+		socketClient = new GameClient(this, "localhost");
+		socketClient.start();
 
 	}
 
@@ -143,7 +158,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			if (System.currentTimeMillis() - lastTimer >= 1000) {
 				lastTimer += 1000;
-				System.out.println("frames:" + frames + "|| Ticks:" + ticks + "|| Shrooms:" + player.numOfShrooms);
+				frame.setTitle("frames:" + frames + "|| Ticks:" + ticks + "|| Shrooms:" + player.numOfShrooms);
 				frames = 0;
 				ticks = 0;
 			}

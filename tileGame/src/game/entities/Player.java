@@ -19,13 +19,16 @@ public class Player extends Mob {
 	public int xMax = 7 * scale;
 	public int yMin = 3;
 	public int yMax = 7 * scale;
+	
+	String username;
 
 	public Map<Item, String> inven = new HashMap<Item, String>();
 	public int numOfShrooms = 0;
 
-	public Player(Level level, int x, int y, InputHandler input) {
+	public Player(Level level, int x, int y, InputHandler input, String username) {
 		super(level, "Player", 10, 10, 1);
 		this.input = input;
+		this.username = username;
 	}
 
 	public void tick() {
